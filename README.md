@@ -1,4 +1,4 @@
-# MulpyVersus - Wrapper for MultiVersus API 
+# MulpyVersus - Python Wrapper for MultiVersus API 
 
 	This library will help you to use the MultiVersus API with Python easily.
 	It is still under development, please report any issue you encounter.
