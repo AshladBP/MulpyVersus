@@ -76,14 +76,14 @@ The file also contains **methods** to convert from slug to name and vice versa.
 
 # Classes
 
-## Match
+## MulpyVersus
 
 	Synchronous Multiversus API wrapper.
 	Represent the basic client.
 	Args: steamToken = The steam encrypted app ticket token
 	Usage Example :
-	   from mulpyversus import MulpyVersus
-	   mulpyversus = MulpyVersus("yourSteamToken")
+	   from mulpyversus.mulpyversus import MulpyVersus
+	   mlp = MulpyVersus("youSteamEcryptedAppTicket")
 
 
 **refresh_token(steamToken : string)**
