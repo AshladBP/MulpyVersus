@@ -643,5 +643,8 @@ Last User in page otherwise
 
 **get_users_in_page()**
 
+<<<<<<< HEAD
 > Returns a list of User Object for every user in the current page"
-
+=======
+> Returns a list of User Object for every user in the current page"
+>>>>>>> 7206ad4396a96a6f25f3b6bc6f2254ab1907fcf3
