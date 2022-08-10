@@ -7,6 +7,7 @@
 
 
 # Usage
+    pip install mulpyversus
 
 With this version, you will need a **Steam Ecrypted App Ticket**. You get get yours [**here**](https://github.com/brianbaldner/multiversus-api-docs/tree/main/steam-ticket-generator). *Future* version should include **the possibility to use an API that doesn't require any sort of token**.
 
