@@ -15,8 +15,8 @@ With this version, you will need a **Steam Ecrypted App Ticket**. You get get yo
 
 Initializing the MulpyVersus class is the first step. With this object, you will be able to call any search function.
 
-    from mulpyversus import MulpyVersus
-    mlp = MulpyVersus("youSteamEcryptedAppTicket")
+    from mulpyversus import mulpyversus
+    mlp = mulpyversus.MulpyVersus("youSteamEcryptedAppTicket")
 By giving your Steam Ecrypted App Ticket, your access_token will automatically be refreshed whenever it is no longer valid. **So no need to manually change it every 24h !** 
 
 # Exemples
