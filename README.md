@@ -532,10 +532,6 @@ To use this, use GamemodeMatches.NAMEOFGAMEMODE
 
 	Represent a PerkPage object
 
-**refresh()**
-
-> Used to refresh a User object
-> Use this when you want to get up to date info about a user for whom you already have a User object.
 
 **get_character()**
 
