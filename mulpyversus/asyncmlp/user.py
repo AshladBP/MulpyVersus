@@ -1,9 +1,5 @@
-    
-import json
 import string
-from mulpyversus.mulpyversus import *
 from mulpyversus.utils import *
-
 
 class UserNetwork:
     """Represent a UserNetwork object
@@ -131,7 +127,7 @@ class PerkPage:
         return self.accountID
 
 
-class User:
+class AsyncUser:
     """Represent a user object
     ::
     Args:
@@ -142,19 +138,23 @@ class User:
     Attributes:
     """
     def __init__(self, id : string, mlpyvrs):
-        self.profileData = json.loads(mlpyvrs.request_data("profiles/" + str(id)).content)  
-        self.accountData = json.loads(mlpyvrs.request_data("accounts/" + str(id)).content)
+        self.id = id
+        self.mlpyvrs = mlpyvrs
+
+    async def init(self):
+        self.profileData = await self.mlpyvrs.request_data("profiles/" + str(self.id))
+        self.accountData = await self.mlpyvrs.request_data("accounts/" + str(self.id))
 
     def __repr__(self):
         return str(self.profileData)
 
-    def refresh(self):
-        """Used to refresh a User object 
+    async def refresh(self):
+        """IS ASYNC : Used to refresh a User object 
         Usage Example:
             ::
-            someone.refresh_user()
+            await someone.refresh_user()
         """
-        self.__init__(self.get_account_id(), self)
+        await self.init(self.get_account_id(), self)
 
     def get_id(self) -> string:
         return self.profileData['id']

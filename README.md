@@ -1,12 +1,13 @@
-# MulpyVersus - Wrapper for MultiVersus API 
+# MulpyVersus - Python Wrapper for MultiVersus API 
 
 	This library will help you to use the MultiVersus API with Python easily.
-	It is still under development, please report any issue you encounter.
+	It is still under development, please report any issue you encounter. Python > 3.9
 
 ![mulpyversus](https://cdn.discordapp.com/attachments/361240816397582336/1006703539365617674/mulpyversus.png)
 
 
 # Usage
+    pip install mulpyversus 
 
 With this version, you will need a **Steam Ecrypted App Ticket**. You get get yours [**here**](https://github.com/brianbaldner/multiversus-api-docs/tree/main/steam-ticket-generator). *Future* version should include **the possibility to use an API that doesn't require any sort of token**.
 
@@ -14,8 +15,21 @@ With this version, you will need a **Steam Ecrypted App Ticket**. You get get yo
 
 Initializing the MulpyVersus class is the first step. With this object, you will be able to call any search function.
 
+    from mulpyversus.mulpyversus import MulpyVersus
     mlp = MulpyVersus("youSteamEcryptedAppTicket")
-By giving your Steam Ecrypted App Ticket, your access_token will automatically be refreshed whenever it is no longer valid. **So no need to manually change it every 24h !** 
+
+Now also support Async. Make sure to call init on the AsyncMulpyVersus object after creating it. 
+
+    from mulpyversus.async.mulpyversus import AsyncMulpyVersus
+    mlp = AsyncMulpyVersus("youSteamEcryptedAppTicket")
+    await mlp.init()
+    
+    --Do Stuff--
+    
+    await mlp.close_session()
+
+By giving your Steam Ecrypted App Ticket, your access_token will automatically be refreshed whenever it is no longer valid. 
+**So no need to manually change it every 24h !** 
 
 # Exemples
 
@@ -74,14 +88,14 @@ The file also contains **methods** to convert from slug to name and vice versa.
 
 # Classes
 
-## Match
+## MulpyVersus
 
 	Synchronous Multiversus API wrapper.
 	Represent the basic client.
 	Args: steamToken = The steam encrypted app ticket token
 	Usage Example :
-	   from mulpyversus import MulpyVersus
-	   mulpyversus = MulpyVersus("yourSteamToken")
+	   from mulpyversus.mulpyversus import MulpyVersus
+	   mlp = MulpyVersus("youSteamEcryptedAppTicket")
 
 
 **refresh_token(steamToken : string)**

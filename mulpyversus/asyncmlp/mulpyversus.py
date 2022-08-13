@@ -1,11 +1,13 @@
 from math import ceil
 import string
 import requests
+import aiohttp
+import asyncio
 import json
-from mulpyversus.matches import Match
-from mulpyversus.user import User
+from mulpyversus.asyncmlp.user import AsyncUser
+from mulpyversus.asyncmlp.matches import AsyncMatch
 
-class UsernameSearchResult():
+class AsyncUsernameSearchResult():
     """Represent a response to a search by username.
     ::
     Set the argument canReturnNone to true to return None if no user is found (otherwise will return an empty list)
@@ -13,17 +15,17 @@ class UsernameSearchResult():
     def __init__(self, mlpyvrs, username : string, limit : int, canReturnNone : bool = False):
         self.currentPage = 1
         self.page_ammount = ceil(self.get_total_result()/self.limit)
+        self.mlpyvrs = mlpyvrs
+        self.username = username
+        self.limit = limit
+        self.canReturnNone = canReturnNone
 
-    def __new__(cls, mlpyvrs, username : string, limit : int = 15, canReturnNone : bool = False):
-        obj = super().__new__(cls)
-        obj.rawData = json.loads(mlpyvrs.request_data("profiles/search_queries/get-by-username/run?username=" + str(username) + "&limit=" + str(limit) + "").content)
-        if obj.rawData["count"] == 0 and canReturnNone:
+    async def init(self):
+        self.rawData = await self.mlpyvrs.request_data("profiles/search_queries/get-by-username/run?username=" + str(self.username) + "&limit=" + str(self.limit) + "")
+        if self.rawData["count"] == 0 and self.canReturnNone:
             return None
-        obj.mlpyvrs = mlpyvrs
-        obj.username = username
-        obj.limit = limit
-        return obj
-        
+        else: 
+            return self
 
     def __repr__(self):
         return str(self.rawData)
@@ -54,15 +56,19 @@ class UsernameSearchResult():
             for i in range(self.page_ammount-self.currentPage):
                 self.next_page()
 
-    def get_user_by_number_in_page(self, number : int):
-        """Returns User Object for specified user number if it exist
+    async def get_user_by_number_in_page(self, number : int):
+        """IS ASYNC : Returns User Object for specified user number if it exist
         ::
         Last User in page otherwise"""
         if number <= self.limit:
-            return User(self.rawData["results"][number-1]["result"]["account_id"], self.mlpyvrs)
+            user = AsyncUser(self.rawData["results"][number-1]["result"]["account_id"], self.mlpyvrs)
+            await user.init()
+            return user
         else:
-            return User(self.rawData["results"][self.get_ammount_of_user_in_current_page()-1]["result"]["account_id"])
-
+            user = AsyncUser(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"])
+            await user.init()
+            return user
+        
     def get_ammount_of_page(self):
         return self.page_ammount
 
@@ -73,12 +79,17 @@ class UsernameSearchResult():
     def get_amount_of_user_in_current_page(self)->int:
         return len(self.rawData["results"])
 
-    def get_users_in_page(self) -> list[User]:
-        """Returns a list of users (Object) in the current page"""
-        return [User(user["result"]["account_id"]) for user in self.rawData["results"]]
+    async def get_users_in_page(self) -> list[AsyncUser]:
+        """IS ASYNC : Returns a list of users (Object) in the current page"""
+        users = []
+        for user in self.rawData["results"]:
+            newUser = AsyncUser(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"])
+            await newUser.init()
+            users.append(newUser)
+        return users
 
-class MulpyVersus:
-    """Synchronous Multiversus API wrapper.
+class AsyncMulpyVersus:
+    """Asynchronous Multiversus API wrapper.
     Represent the basic client.
     ::
     Args:
@@ -92,11 +103,13 @@ class MulpyVersus:
         if not steamToken is None:
             self.url = "https://dokken-api.wbagora.com/"
             self.steamToken = steamToken
-            self.session = requests.Session()
-            self.refresh_token(self.steamToken)
+            self.session = aiohttp.ClientSession()
 
-    def refresh_token(self, steamToken : string = None):
-        """This method will refresh the token used by the API
+    async def init(self):
+        await self.refresh_token()
+    
+    async def refresh_token(self, steamToken : string = None):
+        """IS ASYNC : This method will refresh the token used by the API
         ::
         The token  generated when you create a MulpyVersus object with a Steam Encrypted Key is usable for 24hours
         ::
@@ -113,48 +126,40 @@ class MulpyVersus:
             self.steamToken = steamToken
         tempHeaders = {'x-hydra-api-key':'51586fdcbd214feb84b0e475b130fce0','x-hydra-user-agent':'Hydra-Cpp/1.132.0','Content-Type':'application/json','x-hydra-client-id':'47201f31-a35f-498a-ae5b-e9915ecb411e'}
         tempBody = { "auth": { "fail_on_missing": 1, "steam": self.steamToken }, "options": [ "wb_network" ] }
-        req = self.session.post("https://dokken-api.wbagora.com/access", json=tempBody, headers=tempHeaders).json()
+        req = await self.session.post("https://dokken-api.wbagora.com/access", json=tempBody, headers=tempHeaders)
+        req = await req.json()
         self.token = req["token"]
         self.header = {'x-hydra-api-key':'51586fdcbd214feb84b0e475b130fce0','x-hydra-user-agent':'Hydra-Cpp/1.132.0','Content-Type':'application/json','x-hydra-access-token': self.token}
+        
+    async def close_session(self):
+        await self.session.close()
 
-
-    def request_data(self, rqst : string):
+    async def request_data(self, rqst : string):
         """DON'T USE - Used by other classes"""
-        req = self.session.get(self.url + rqst, headers=self.header)
-        if "code" in json.loads(req.content) and json.loads(req.content)["code"] == 401 and "msg" in json.loads(req.content) and json.loads(req.content)["msg"] == "User session kicked":
-            self.refresh_token()
-            req = self.session.get(self.url + rqst, headers=self.header)
+        req = await self.session.get(self.url + rqst, headers=self.header)
+        req = await req.json()
+        if "code" in req and req["code"] == 401 and "msg" in req and req["msg"] == "User session kicked":
+            await self.refresh_token()
+            req = await self.session.get(self.url + rqst, headers=self.header)
         return req
 
-    def get_match_by_id(self, id:string) -> Match:
-        return Match(id, self)
+    async def get_match_by_id(self, id:string) -> AsyncMatch:
+        match = AsyncMatch(id, self)
+        await match.init()
+        return match
 
-    def get_user_by_id(self, id:string) -> User:
-        return User(id, self)
+    async def get_user_by_id(self, id:string) -> AsyncUser:
+        user = AsyncUser(id, self)
+        await user.init()
+        return user
 
-    def get_users_by_username(self, username:string, limit : int = 15, canReturnNone : bool = False) -> UsernameSearchResult:
-        """Returns a UsernameSearchResult object containing results for the search
+    async def get_users_by_username(self, username:string, limit : int = 15, canReturnNone : bool = False):
+        """IS ASYNC : Returns a UsernameSearchResult object containing results for the search
         ::
         Usefull if you want all the results for that name
         ::
         Set the argument canReturnNone to true to return None if no user is found
         """
-        return UsernameSearchResult(self, username, limit, canReturnNone)
-
-    def get_user_by_username(self, username:string, limit : int = 15, canReturnNone : bool = False) -> User:
-        """Returns a User object for that username
-        ::
-        If many results are found, returns the first one
-        ::
-        Usefull if you are confident what the username is
-        """
-        return UsernameSearchResult(self, username, limit, canReturnNone).get_user_by_number_in_page(1)
-
-    def refresh_user(self, user:User):
-        """Used to refresh a User object (all its data)
-        You can also use User.refresh() to refresh a User
-        Usage Example:
-            ::
-            MulpyVersus.refresh_user(someone)
-        """
-        user.__init__(user.get_account_id(), self)
+        search = AsyncUsernameSearchResult(self, username, limit, canReturnNone)
+        search = search.init()
+        return search

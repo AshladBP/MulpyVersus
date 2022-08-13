@@ -1,9 +1,8 @@
 import string
-from mulpyversus.user import User
+from mulpyversus.asyncmlp.user import AsyncUser
 import json
 
-
-class PlayerMatchData:
+class AsyncPlayerMatchData:
     """Represent a PlayerData object from a Match
     ::
     Contains all the informations about a player for this match
@@ -60,12 +59,15 @@ class PlayerMatchData:
     def get_username(self) -> string:
         return self.rawData['Username']
     
-    def get_user(self) -> User:
-        return User(self.get_account_id(), self.mlpyvrs)
+    async def get_user(self) -> AsyncUser:
+        """IS ASYNC"""
+        user = AsyncUser(self.get_account_id(), self.mlpyvrs)
+        await user.init()
+        return user
 
 
 
-class Match:
+class AsyncMatch:
     """Represent a match object
     ::
     Args:
@@ -77,8 +79,11 @@ class Match:
     """
     def __init__(self, id : string, mlpyvrs):
         self.mlpyvrs = mlpyvrs
-        self.rawData = json.loads(mlpyvrs.request_data("matches/" + id).content)        
-    
+        self.id = id
+        
+    async def init(self):
+        self.rawData = await self.mlpyvrs.request_data("matches/" + self.id)
+
     def __repr__(self):
         return str(self.rawData)
 
@@ -127,25 +132,35 @@ class Match:
     def get_name(self) -> string:
         return self.rawData['name']
 
-    def get_winners(self) -> list[User]:
-        """Returns a list of winner in this match.
+    async def get_winners(self) -> list[AsyncUser]:
+        """IS ASYNC : Returns a list of winner in this match.
         ::
         You can access a specific winner with get_winner()[index]
         ::
         Returns:
             list[user]: a list of winner.
         """
-        return [User(id, self.mlpyvrs) for id in self.rawData['win']]
+        users = []
+        for id in self.rawData['win']:
+            newUser = AsyncUser(id, self.mlpyvrs)
+            await newUser.init()
+            users.append(newUser)
+        return users
 
-    def get_losers(self)-> list[User] :
-        """Returns a list of loosers in this match.
+    async def get_losers(self)-> list[AsyncUser] :
+        """IS ASYNC : Returns a list of loosers in this match.
         ::
         You can access a specific looser with get_losers()[index]
         ::
         Returns:
             list[User]: a list of loosers.
         """
-        return [User(id, self.mlpyvrs) for id in self.rawData['loss']]
+        users = []
+        for id in self.rawData['loss']:
+            newUser = AsyncUser(id, self.mlpyvrs)
+            await newUser.init()
+            users.append(newUser)
+        return users
 
     def is_draw(self):
         return self.rawData['draw']
@@ -158,12 +173,12 @@ class Match:
 
     def get_player_data_by_id(self, id : int):
         if self.get_player_ammount_in_match()-1 <= id and id>0:
-            return PlayerMatchData(self.rawData['server_data']['PlayerData'][id], self.mlpyvrs)
+            return AsyncPlayerMatchData(self.rawData['server_data']['PlayerData'][id], self.mlpyvrs)
         else:
             raise ValueError('The id you passed is invalid (too big or too small) - Use get_player_ammount_in_match() to know total ammount of players.')
         
-    def get_all_players_data_in_match(self) -> list[PlayerMatchData]:
-        return [PlayerMatchData(data , self.mlpyvrs) for data in self.rawData['server_data']['PlayerData']]
+    def get_all_players_data_in_match(self) -> list[AsyncPlayerMatchData]:
+        return [AsyncPlayerMatchData(data , self.mlpyvrs) for data in self.rawData['server_data']['PlayerData']]
 
     def get_team_score_by_id(self, id : int) -> int:
         if self.get_player_ammount_in_match()-1 <= id and id>0:
@@ -183,4 +198,5 @@ class Match:
     def get_match_min_players(self)-> int:
         return self.rawData['template']['min_players']
 
-  
+
+
