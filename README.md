@@ -28,6 +28,8 @@ Now also support Async. Make sure to call init on the AsyncMulpyVersus object af
     
     await mlp.close_session()
 
+Async methods works the same way, methods that needs to be awaited are specified by "IS ASYNC" in the help. 
+
 By giving your Steam Ecrypted App Ticket, your access_token will automatically be refreshed whenever it is no longer valid. 
 **So no need to manually change it every 24h !** 
 
