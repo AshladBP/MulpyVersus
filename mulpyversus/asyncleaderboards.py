@@ -1,11 +1,12 @@
     
 import json
 import string
+from mulpyversus.asyncuser import AsyncUser
 from mulpyversus.mulpyversus import *
 from mulpyversus.user import *
 from mulpyversus.utils import *
 
-class UserLeaderboard:
+class AsyncUserLeaderboard:
     """Represent a UserLeaderboard object
     ::
         ::
@@ -13,17 +14,21 @@ class UserLeaderboard:
             a
     Attributes:
     """
-    def __init__(self,mlpyvrs, id : string ):
-        self.oneData = json.loads(mlpyvrs.request_data("/leaderboards/1v1/score-and-rank/" + str(id)).content)  
-        self.twoData = json.loads(mlpyvrs.request_data("/leaderboards/2v2/score-and-rank/" + str(id)).content)
+    def __init__(self, id : string, mlpyvrs):
+        self.id = id
+        self.mlpyvrs = mlpyvrs
+    
+    async def init(self):
+        self.oneData = await self.mlpyvrs.request_data("/leaderboards/1v1/score-and-rank/" + str(self.id))
+        self.twoData = await self.mlpyvrs.request_data("/leaderboards/2v2/score-and-rank/" + str(self.id))
 
-    def refresh(self):
-        """Used to UserLeaderboard a User object 
+    async def refresh(self):
+        """Used to refresh a AsyncUserLeaderboard object 
         Usage Example:
             ::
             leaderbord.refresh_user()
         """
-        self.__init__(self.get_account_id(), self)
+        await self.init(self.get_account_id(), self)
 
     def get_account_id(self) -> string:
         return self.oneData['member']
@@ -41,7 +46,7 @@ class UserLeaderboard:
             return self.twoData['rank'] if 'rank' in self.oneData else None
     
 
-class GlobalLeaderboard:
+class AsyncGlobalLeaderboard:
     """Represent a GlobalLeaderboard object
     ::
     Attributes:
@@ -49,31 +54,50 @@ class GlobalLeaderboard:
     countLimit : limits the amount of result you get 
     """
     def __init__(self, mlpyvrs, gamemode : GamemodeRank ,countLimit : int):
-        self.rawData = json.loads(mlpyvrs.request_data("leaderboards/" + gamemode.value + "/show?count=" + str(countLimit)).content)
         self.mlpyvrs = mlpyvrs
         self.countLimit = countLimit
+        self.gamemode = gamemode
 
-    def get_users_in_leaderboard(self) -> list[User]:
-        """Returns a list of users objects from the leaderboard"""
-        return [User(userLead['member'], self.mlpyvrs) for userLead in self.rawData['leaders']]
+    async def init(self):
+        self.rawData = await self.mlpyvrs.request_data("leaderboards/" + self.gamemode.value + "/show?count=" + str(self.countLimit))
 
-    def get_user_in_leaderboard(self, id):
-        """Returns the specified user from the leaderboard
+    async def get_users_in_leaderboard(self) -> list[User]:
+        """IS ASYNC
+        ::
+        Returns a list of AsyncUser objects from the leaderboard
+        """
+        users = []
+        for userLead in self.rawData['leaders']:
+            newUser = AsyncUser(userLead['member'], self.mlpyvrs)
+            await newUser.init()
+            users.append(newUser)
+        return users
+
+    async def get_user_in_leaderboard(self, id):
+        """IS ASYNC 
+        ::
+        Returns the specified user from the leaderboard
         ::
         id : starts at 1, to get first result from leaderboard -> get_user_in_leaderboard(1)
         """
         if id < self.countLimit:
-            return User(self.rawData['leaders'][id+1]['member'], self.mlpyvrs)
+            newUser = AsyncUser(self.rawData['leaders'][id+1]['member'], self.mlpyvrs)
+            await newUser.init()
+            return newUser
         else:
             return None
 
-    def get_user_rank_in_leaderbord(self, id):
-        """Returns the specified user RANK from the leaderboard
+    async def get_user_rank_in_leaderbord(self, id):
+        """IS ASYNC 
+        ::
+        Returns the specified user RANK from the leaderboard
         ::
         id : starts at 1, to get first result from leaderboard -> get_user_in_leaderboard(1)
         """
         if id < self.countLimit:
-            return self.rawData['leaders'][id+1]['rank']
+            newUser = AsyncUser(self.rawData['leaders'][id+1]['rank'], self.mlpyvrs)
+            await newUser.init()
+            return newUser
         else:
             return None
 

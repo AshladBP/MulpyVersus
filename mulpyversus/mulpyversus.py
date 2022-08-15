@@ -4,6 +4,8 @@ import requests
 import json
 from mulpyversus.matches import Match
 from mulpyversus.user import User
+from mulpyversus.leaderboards import *
+from mulpyversus.utils import *
 
 class UsernameSearchResult():
     """Represent a response to a search by username.
@@ -158,3 +160,18 @@ class MulpyVersus:
             MulpyVersus.refresh_user(someone)
         """
         user.__init__(user.get_account_id(), self)
+
+    def get_global_leaderbord_in_gamemode(self, gamemode : GamemodeRank, countLimit:int = 10):
+        """Returns a GlobalLeaderboard object
+        ::
+        Attributes:
+        ::
+        countLimit : limits the amount of result you get 
+        """
+        return GlobalLeaderboard(self, gamemode, countLimit)
+
+    def get_user_leaderboard_in_gamemode(self, gamemode : GamemodeRank, id):
+        """Returns a UserLeaderboard object
+        ::
+        """
+        return UserLeaderboard(self, gamemode, id)

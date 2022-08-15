@@ -4,8 +4,10 @@ import requests
 import aiohttp
 import asyncio
 import json
+from mulpyversus.asyncleaderboards import *
 from mulpyversus.asyncuser import AsyncUser
 from mulpyversus.asyncmatches import AsyncMatch
+from mulpyversus.utils import *
 
 class AsyncUsernameSearchResult():
     """Represent a response to a search by username.
@@ -163,3 +165,26 @@ class AsyncMulpyVersus:
         search = AsyncUsernameSearchResult(self, username, limit, canReturnNone)
         search = search.init()
         return search
+
+    async def get_global_leaderbord_in_gamemode(self, gamemode : GamemodeRank, countLimit:int = 10):
+        """IS ASYNC
+        ::
+        Returns a GlobalLeaderboard object
+        ::
+        Attributes:
+        ::
+            countLimit : limits the amount of result you get 
+        """
+        leaderbord = AsyncGlobalLeaderboard(self, gamemode, countLimit)
+        leaderbord.init()
+        return leaderbord
+
+    async def get_user_leaderboard_in_gamemode(self, gamemode : GamemodeRank, id):
+        """IS ASYNC
+        ::
+        Returns a UserLeaderboard object
+        ::
+        """
+        leaderbord = AsyncUserLeaderboard(self, gamemode, id)
+        leaderbord.init()
+        return leaderbord

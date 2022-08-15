@@ -658,3 +658,11 @@ Last User in page otherwise
 **get_users_in_page()**
 
 > Returns a list of User Objects for every user on the current page."
+
+
+## Leaderboards
+
+	GlobalLeaderboard - UserLeaderboard and AsyncGlobalLeaderboard - AsyncUserLeaderboard  are available.
+	Global leaderboard represent the worldwide leaderboard.
+	User leaderboard is the leaderboard for a specific user (to get his rank in a specific gamemode).
+	Getting a UserLeaderboard also lets you get some information about his total wins, loss and linked networks for better performance. But you can also get a User object from it.

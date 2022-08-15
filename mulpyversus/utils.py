@@ -20,6 +20,10 @@ class Characters(enum.Enum):
     IronGiant = {"name": "Iron Giant", "slug": "character_C017"}
     LebronJames = {"name": "Lebron James", "slug": "character_c16"}
 
+def get_character_from_slug(slug):
+    for char in Characters:
+        if char.value["slug"] == slug:
+            return char
 
 def slug_to_display(slug):
     for char in Characters:
@@ -58,6 +62,12 @@ class GamemodeMatches(enum.Enum):
     TwoVsTwo = "2v2"
     FreeForAll = "ffa"
 
+# For request regarding player rank
+class GamemodeRank(enum.Enum):
+    """For request regarding players matches"""
+
+    OneVsOne = "1v1"
+    TwoVsTwo = "2v2"
 
 class Packs(enum.Enum):
     FoundersPackThree = "FoundersPack3"

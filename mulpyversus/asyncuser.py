@@ -215,16 +215,16 @@ class AsyncUser:
         return UserNetwork(self.accountData['identity']['alternate'][network.value], network.value, self.get_account_id()) if network.value in self.accountData['identity']['alternate'] else False
 
     def get_last_login_platform(self) -> string:
-        return self.accountData['data']['LastLoginPlatform']
+        return self.accountData['data']['LastLoginPlatform'] if 'LastLoginPlatform' in self.accountData['data'] else None
 
     def get_last_played_character(self) -> string:
-        return self.accountData['data']['LastPlayedCharacterSlug']
+        return self.accountData['data']['LastPlayedCharacterSlug'] if 'LastPlayedCharacterSlug' in self.accountData['data'] else None
 
     def get_last_login_time(self) -> string:
-        return self.accountData['server_data']['LastLoginTime']
+        return self.accountData['server_data']['LastLoginTime'] if 'LastLoginTime' in self.profileData['server_data'] else 0
     
     def get_last_logout_time(self) -> string:
-        return self.accountData['server_data']['LastLogoutTime']
+        return self.accountData['server_data']['LastLogoutTime'] if 'LastLoginTime' in self.profileData['server_data'] else 0
 
     def get_character_level(self, characterName : Characters) -> int:
         """Return the level of the character
@@ -237,7 +237,7 @@ class AsyncUser:
         if  characterName.value["slug"] in self.accountData['server_data']['Characters'] :
             return self.accountData['server_data']['Characters'][characterName.value["slug"]]["Mastery"]["Level"]
         else:
-            return 
+            return 0
 
     def get_character_current_exp(self, characterName : Characters) -> int:
         """Return the current experience of the charachter
@@ -253,22 +253,22 @@ class AsyncUser:
             return 0
 
     def get_user_level(self) -> int:
-        return self.accountData['server_data']['Level'] 
+        return self.accountData['server_data']['Level'] if 'Level' in self.accountData['server_data'] else 0
 
     def get_user_current_expires_in(self) -> int:
-        return self.accountData['server_data']['CurrentXP']
+        return self.accountData['server_data']['CurrentXP'] if 'CurrentXP' in self.accountData['server_data'] else 0
 
     def get_user_first_claim_time(self) -> int:
-        return self.accountData['server_data']['FirstWinClaimTime']
+        return self.accountData['server_data']['FirstWinClaimTime'] if 'FirstWinClaimTime' in self.accountData['server_data'] else None
 
     def get_anti_cheat_server_kick(self) -> bool:
         return self.accountData['server_data']['AntiCheatServerKick'] if "AntiCheatServerKick" in self.accountData['server_data'] else 0
         
     def get_debug_all_unlocked(self) -> int:
-        return self.profileData['server_data']['debug_all_unlocked']
+        return self.profileData['server_data']['debug_all_unlocked'] if 'debug_all_unlocked' in self.profileData['server_data'] else None
 
     def get_battlepass_id(self) -> string:
-        return self.profileData['server_data']['BattlepassID']
+        return self.profileData['server_data']['BattlepassID'] if "BattlepassID" in self.profileData['server_data'] else None
 
     def get_highest_damage_dealt(self) -> int:
         return self.profileData['server_data']['stat_trackers']['HighestDamageDealt'] if 'HighestDamageDealt' in self.profileData['server_data']['stat_trackers'] else 0
