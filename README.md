@@ -2,7 +2,7 @@
 # MulpyVersus - Python Wrapper for MultiVersus API 
 
 	This library will help you to use the MultiVersus API with Python easily.
-	It is still under development, please report any issue you encounter. Python > 3.9
+	It is still under development. Please report any issue you encounter. Python > 3.9
 
 ![mulpyversus](https://cdn.discordapp.com/attachments/361240816397582336/1006703539365617674/mulpyversus.png)
 
@@ -10,7 +10,7 @@
 # Usage
     pip install mulpyversus 
 
-With this version, you will need a **Steam Ecrypted App Ticket**. You get get yours [**here**](https://github.com/brianbaldner/multiversus-api-docs/tree/main/steam-ticket-generator). *Future* version should include **the possibility to use an API that doesn't require any sort of token**.
+With this version, you will need a **Steam Encrypted App Ticket**. You get yours [**here**](https://github.com/brianbaldner/multiversus-api-docs/tree/main/steam-ticket-generator). *Future* version should include **the possibility to use an API that doesn't require any sort of token**.
 
 ## Get the API working
 
@@ -29,13 +29,13 @@ Now also support Async. Make sure to call init on the AsyncMulpyVersus object af
     
     await mlp.close_session()
 
-AsyncMulpyVersus methods works the same way, methods that needs to be awaited are specified by "IS ASYNC" in the help.
-Those are the methods that perform API calls, other methods aren't asynchronous since they only fetch data from JSON files already in memory.
+AsyncMulpyVersus methods work the same way. Methods that need to be awaited are specified by "IS ASYNC" in the help.
+Those are the methods that perform API calls. Other methods aren't asynchronous since they only fetch data from JSON files already in memory.
 
-By giving your Steam Ecrypted App Ticket, your access_token will automatically be refreshed whenever it is no longer valid. 
+By giving your Steam Encrypted App Ticket, your access_token will automatically refreshed whenever it is no longer valid. 
 **So no need to manually change it every 24h !** 
 
-# Exemples
+# Examples
 
 ## Get information about a Match
 
@@ -61,11 +61,11 @@ You can store all the information about a user like this :
     print(user.has_network(Networks.Twitch))
 The first print shows you how to **get the amount of match a User has played**.
 
-The second one returns you **informations about the specified network if it is linked to the users account or False otherwise** (this will be improved in future version).
+The second one returns you **information about the specified network if it is linked to the user account or False otherwise** (this feature will be improved in future versions).
 ## Utils file
 
-To make it easier to use this library, every character name, network name, perk id, gamemode names, ect. are stored in enumes that you will find in the utils.py file. 
-Exemple : 
+To make it easier to use this library, every character name, network name, perk id, gamemode, names, etc. are stored in enumes that you will find in the utils.py file. 
+Example : 
 
 	 class  Characters(enum.Enum):
 	    Shaggy = {"name": "Shaggy", "slug": "character_shaggy"}
@@ -86,7 +86,7 @@ Exemple :
 	    IronGiant = {"name": "Iron Giant", "slug": "character_C017"}
 	    LebronJames = {"name": "Lebron James", "slug": "character_c16"}
     
-**Everytime** one of theses attributs is necessary(a gamemode, a charachter, cet), use theses **enums**. 
+**Everytime** one of these attributes is necessary(a gamemode, a character, etc.). Use these **enums**. 
 The file also contains **methods** to convert from slug to name and vice versa.
 
 
@@ -95,7 +95,7 @@ The file also contains **methods** to convert from slug to name and vice versa.
 ## MulpyVersus
 
 	Synchronous Multiversus API wrapper.
-	Represent the basic client.
+	Represent the primary client.
 	Args: steamToken = The steam encrypted app ticket token
 	Usage Example :
 	   from mulpyversus.mulpyversus import MulpyVersus
@@ -105,8 +105,8 @@ The file also contains **methods** to convert from slug to name and vice versa.
 **refresh_token(steamToken : string)**
 
 > This method will refresh the token used by the API
-The token generated when you create a MulpyVersus object with a Steam Encrypted Key is usable for 24hours
-It should be refreshed at least everyone 24hours, but it is automatically refreshed if a request doesn't work
+The token generated when you create a MulpyVersus object with a Steam Encrypted Key is usable for 24 hours
+It should be refreshed at least everyone 24hour, but it is automatically refreshed if a request doesn't work
 Optional: You can pass a new steam token if you want to change it
 Usage Example :
 mulpyversus.refresh_token()
@@ -128,21 +128,21 @@ mulpyversus.refresh_token("aNewSteamToken")
 
 **get_users_by_username(username : string, limit : int, canReturnNone : bool)**
 
-> Returns a instance of the class UsernameSearchResult containing results for the search
-Usefull if you want all the results for that name
-By default, will return a UsernameSearchResult even if no result are found
+> Returns an instance of the class UsernameSearchResult containing results for the search
+Useful if you want all the results for that name
+By default, it will return a UsernameSearchResult even if no results are found
 Set the argument canReturnNone to true to return None if no user is found
 
 **get_user_by_username(username : string, limit : int, canReturnNone : bool)**
 
 > Returns a User object for that username
 If many results are found, returns the first one
-Usefull if you are confident what the username is
+Useful if you are confident what the username is
 
 **refresh_user(user : User)**
 
 > Used to refresh a User object.
-> Use this when you want to get up to date info about a user for whom you already have a User object.
+> Use this when you want to get up-to-date info about a user for whom you already have a User object.
 > You can also use User.refresh() to refresh a User
 MulpyVersus.refresh_user(someone)
 
@@ -153,7 +153,7 @@ MulpyVersus.refresh_user(someone)
 	Represent a match object
 **get_player_ammount_in_match()**
 
-> Gets the amount of player in the match.
+> Gets the number of players in the match.
 > Examples: amounfOfPlayer = matches.get_player_ammount_in_match()
 
 **get_match_id()**
@@ -183,12 +183,12 @@ MulpyVersus.refresh_user(someone)
 
 **get_winners()**
 
-> Return a list of instance of the class User
+> Return a list of the instance of the class User
 > You can access a specific winner with get_winner()[index]
 
 **get_losers()**
 
-> Return a list of instance of the class **User**
+> Return a list of the instance of the class **User**
 > You can access a specific loser with **get_winner**()[index]
 
 **is_draw()**
@@ -217,11 +217,11 @@ MulpyVersus.refresh_user(someone)
 
 **get_match_max_player()**
 
-> Return max ammount of players allowed in this match
+> Return max amount of players allowed in this match
 
 **get_match_min_players()**
 
-> Return max ammount of players allowed in this match
+> Return max amount of players allowed in this match
 
 **get_match_template_name()**
 
@@ -230,13 +230,13 @@ MulpyVersus.refresh_user(someone)
 ## PlayerMatchData
 
 	Represent a PlayerData object from a Match
-	Contains all the informations about a player for this match
-	Ex: damage dealt, ringounts ect
+	It contains all the information about a player for this match
+	Ex: damage dealt, ringouts, etc
 
 
 **get_account_id()**
 
-> Return the account id for the player related to this Object
+> Return the account id for the player related to this object
 
 **get_character_slug()**
 
@@ -261,7 +261,7 @@ You can get a display name of the character using **Utils.slug_to_display(theSlu
 
 **get_played_plateform()**
 
-> Return the platform this player played on (PC ect)
+> Return the platform this player played on (PC etc)
 
 **get_player_index()**
 
@@ -269,11 +269,11 @@ You can get a display name of the character using **Utils.slug_to_display(theSlu
 
 **get_ringouts_dealt()**
 
-> Return the amount of ringouts this player dealt during this match
+> Return the number of ringouts this player dealt during this match
 
 **get_score()**
 
-> Return this players score for this match
+> Return this player's score for this match
 
 **get_team_index()**
 
@@ -285,7 +285,7 @@ You can get a display name of the character using **Utils.slug_to_display(theSlu
 
 **get_user()**
 
-> Return an instance of instance of the class **User** for this player
+> Return an instance of the class **User** for this player
 
 ## User
 
@@ -293,7 +293,7 @@ You can get a display name of the character using **Utils.slug_to_display(theSlu
 **refresh()**
 
 > Used to refresh a User object
-> Use this when you want to get up to date info about a user for whom you already have a User object.
+> Use this when you want to get up-to-date info about a user for whom you already have a User object.
 
 **get_id()**
 
@@ -305,11 +305,11 @@ You can get a display name of the character using **Utils.slug_to_display(theSlu
 
 **get_updated_at()**
 
-> When the userwas last updated
+> When the user was last updated
 
 **get_created_at()**
 
-> When the usercreated his account
+> When the user created their account
 
 **get_last_login()**
 
@@ -342,20 +342,20 @@ Returns False if the Character is not found
 
 **is_username_default_username()**
 
-> If the username is a default username given by warner bros network
+> If the username is a default username given by Warner Bros network
 
 **get_user_networks()**
 
-> Return a list of instance of the class **UserNetwork** 
+> Return a list of an instance of the class **UserNetwork** 
 
 **has_network(network : Networks)**
 
-> Returns Network objects for specified network
+> Returns Network objects for the specified network
 > Returns False if the network is not found in the user's network list
 
 **get_last_login_platform()**
 
-> Return the last platform the user was logged in with
+> Return the last platform the user was logged in on
 
 **get_last_played_character()**
 
@@ -385,11 +385,11 @@ To use this, use Characters.NAMEOFCHARS
 
 **get_user_first_claim_time()**
 
-> Gets the user first claim time
+> Gets the user's first claim time
 
 **get_anti_cheat_server_kick()**
 
-> If the user ever go kicked by anti cheat
+> If the user ever gets kicked by anti-cheat
 
 **get_debug_all_unlocked()**
 
@@ -397,11 +397,11 @@ To use this, use Characters.NAMEOFCHARS
 
 **get_match_min_players()**
 
-> Return max ammount of players allowed in this match
+> Return max amount of players allowed in this match
 
 **get_battlepass_id()**
 
-> Return the battlepass id
+> Return the battle pass id
 
 **get_highest_damage_dealt()**
 
@@ -421,12 +421,12 @@ To use this, use Characters.NAMEOFCHARS
 
 **get_wins_with_character(characterName : Characters)**
 
-> Return the number of winss with the character
+> Return the number of wins with the character
 To use this, use Characters.NAMEOFCHARS
 
 **get_total_attacks_dodged()**
 
-> Return the total amount of attack this user dodged
+> Return the total amount of attacks the user dodged
 
 **get_total_assits()**
 
@@ -434,8 +434,8 @@ To use this, use Characters.NAMEOFCHARS
 
 **get_unclaimed_character_rewards(characterName : Characters)**
 
-> Return unclaimed rewards for the charachter
-FOR NOW, THIS WILL RETURN ALL INFORMATIONS AS JSON
+> Return unclaimed rewards for the character
+FOR NOW, THIS WILL RETURN ALL INFORMATION AS JSON
 To use this, use Characters.NAMEOFCHARS
 
 **get_lifetime_damage()**
@@ -448,57 +448,57 @@ To use this, use Characters.NAMEOFCHARS
 
 **get_loss_streak()**
 
-> Return the current los streak 
+> Return the current loss streak 
 
 **get_matches_played()**
 
-> Return the total amount of match this user played
+> Return the total amount of matches this user played
 
 **get_sets_played()**
 
-> Return the total ammount of sets this user played
+> Return the total amount of sets this user played
 
 **get_all_owned_perks()**
 
 > Return a list of instances of the class **Perks**
 > To get specific data from a perk, use the PerkValue Enum
-Exemple: somePerk.value[PerkValue.WANTEDVALUE.value]
-List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
+Example: somePerk.value[PerkValue.WANTEDVALUE.value]
+List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
 
 **get_owned_perks_by_character(character : Characters)**
 
 > Return a list of instances of the class **Perks** for the specified character
 > To get specific data from a perk, use the PerkValue Enum
-Exemple: somePerk.value[PerkValue.WANTEDVALUE.value]
-List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
+Example: somePerk.value[PerkValue.WANTEDVALUE.value]
+List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
 
 **get_character_rating(character : Characters, rating : RatingKeys, gm : GamemodeRating)**
 
 > Return the value of the desired Rating for the specified Character on the specified Gamemode
-If the user has not rating for this character, this return -1.0
+If the user has no rating for this character, this return -1.0
 To use this, use Characters.NAMEOFCHARS
 To use this, use RatingKeys.RATINGKEY
 To use this, use GamemodeRating.NAMEOFGAMEMODE
 
 **get_top_ranked_character_in_gamemode(gm : GamemodeRating)**
 
-> Return the top ranked character in given GamemodeRating
+> Return the top-ranked character in given GamemodeRating
 To use this, use GamemodeRating.NAMEOFGAMEMODE
 
 **get_top_rated_character_ratings()**
 
-> Return the asked rating for the top ranked character in the given gamemode
-If the user has not rating for this gamemode, this return -1.0
+> Return the asked rating for the top-ranked character in the given game mode
+If the user has no rating for this game mode, this return -1.0
 To use this, use RatingKeys.RATINGKEY
 To use this, use GamemodeRating.NAMEOFGAMEMODE
 
 **get_ally_perk_sharing(character : Characters)**
 
-> Return ally perk shring for given character 
+> Return ally perk sharing for a given character 
 
 **perk_training_enabled()**
 
-> Return perk traning enabled for given character
+> Return perk training enabled for a given character
 
 **is_2v2_prompt_shown()**
 
@@ -520,12 +520,12 @@ To use this, use GamemodeMatches.NAMEOFGAMEMODE
 
 **get_win_streak_count()**
 
-> Return current winstreak in specified GamemodeMatches
+> Return current win streak in specified GamemodeMatches
 To use this, use GamemodeMatches.NAMEOFGAMEMODE
 
 **get_longest_win_streak()**
 
->Return return longest winstreak in specified GamemodeMatches
+>Return return longest win streak in specified GamemodeMatches
 To use this, use GamemodeMatches.NAMEOFGAMEMODE
 
 ## PerkPage
@@ -545,29 +545,29 @@ To use this, use GamemodeMatches.NAMEOFGAMEMODE
 
 > Represent the main perk for this page
 To get specific data from a perk, use the PerkValue Enum
-Exemple: somePerk.value[PerkValue.WANTEDVALUE.value]
-List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
+Example: somePerk.value[PerkValue.WANTEDVALUE.value]
+List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
 
 **get_first_perk()**
 
 > Represent the first "small" perk for this page
 To get specific data from a perk, use the PerkValue Enum
-Exemple: somePerk.value[PerkValue.WANTEDVALUE.value]
-List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
+Example: somePerk.value[PerkValue.WANTEDVALUE.value]
+List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
 
 **get_second_perk()**
 
 > Represent the second "small" perk for this page
 To get specific data from a perk, use the PerkValue Enum
-Exemple: somePerk.value[PerkValue.WANTEDVALUE.value]
-List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
+Example: somePerk.value[PerkValue.WANTEDVALUE.value]
+List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
 
 **get_third_perk()**
 
 > Represent the third "small" perk for this page
 To get specific data from a perk, use the PerkValue Enum
-Exemple: somePerk.value[PerkValue.WANTEDVALUE.value]
-List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
+Example: somePerk.value[PerkValue.WANTEDVALUE.value]
+List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice
 
 **get_related_account_id()**
 
@@ -576,26 +576,26 @@ List of values : Slug, HydraName, DisplayName, Description, AssociatedCharacterN
 ## UserNetwork
 
 	Represent a UserNetwork object
-	A network linked to the users account
+	A network linked to the user's account
 
 **get_network_name()**
 
 > Returns the name of the network.
-Exemple: "wb_network", "twitch", "steam"
+Example: "wb_network", "twitch", "steam"
 
 **get_network_user_id()**
 
-> Returns the users id on that network.
+> Returns the user's id on that network.
 Returns None if the network has no ID
 
 **get_network_user_avatar()**
 
-> Returns the users avatar on that network.
+> Returns the user's avatar on that network.
 Returns None or null if the network has no avatar
 
 **get_network_user_username()**
 
-> Returns the users username on that network.
+> Returns the user's username on that network.
 Returns None or null if the network has no username
 
 **get_network_user_created_at()**
@@ -612,7 +612,7 @@ Returns None or null if the network has no created_at
 
 	Represent a response to a search by username.
 	Set the argument canReturnNone to true to return None if no user is found.
-	You can navigate all its pages
+	You can navigate all its pages.
 
 **set_limit()**
 
@@ -632,12 +632,12 @@ Returns None or null if the network has no created_at
 
 **get_page_by_number(pageNumber: int)**
 
-> Set the UserNamePage Object to the specified page number if it exist
+> Set the UserNamePage Object to the specified page number if it exists
 Last page otherwise
 
 **get_user_by_number_in_page(number : int)**
 
-> Returns a User Object for specified user number if it exist
+> Returns a User Object for specified user number if it exists
 Last User in page otherwise
 
 **get_ammount_of_page()**
@@ -652,10 +652,9 @@ Last User in page otherwise
 
 **get_amount_of_user_in_current_page()**
 
-> Returns the amount of users in the current page
+> Returns the number of users on the current page
 
 
 **get_users_in_page()**
 
-> Returns a list of User Object for every user in the current page"
-
+> Returns a list of User Objects for every user on the current page."
