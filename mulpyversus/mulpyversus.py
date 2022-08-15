@@ -61,7 +61,7 @@ class UsernameSearchResult():
         if number <= self.limit:
             return User(self.rawData["results"][number-1]["result"]["account_id"], self.mlpyvrs)
         else:
-            return User(self.rawData["results"][self.get_ammount_of_user_in_current_page()-1]["result"]["account_id"])
+            return User(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"], self.mlpyvrs)
 
     def get_ammount_of_page(self):
         return self.page_ammount
@@ -75,7 +75,7 @@ class UsernameSearchResult():
 
     def get_users_in_page(self) -> list[User]:
         """Returns a list of users (Object) in the current page"""
-        return [User(user["result"]["account_id"]) for user in self.rawData["results"]]
+        return [User(user["result"]["account_id"], self.mlpyvrs) for user in self.rawData["results"]]
 
 class MulpyVersus:
     """Synchronous Multiversus API wrapper.
@@ -121,7 +121,7 @@ class MulpyVersus:
     def request_data(self, rqst : string):
         """DON'T USE - Used by other classes"""
         req = self.session.get(self.url + rqst, headers=self.header)
-        if "code" in json.loads(req.content) and json.loads(req.content)["code"] == 401 and "msg" in json.loads(req.content) and json.loads(req.content)["msg"] == "User session kicked":
+        if "msg" in json.loads(req.content) and "User session" in json.loads(req.content)["msg"] :
             self.refresh_token()
             req = self.session.get(self.url + rqst, headers=self.header)
         return req

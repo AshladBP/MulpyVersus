@@ -4,8 +4,8 @@ import requests
 import aiohttp
 import asyncio
 import json
-from mulpyversus.asyncmlp.user import AsyncUser
-from mulpyversus.asyncmlp.matches import AsyncMatch
+from mulpyversus.asyncuser import AsyncUser
+from mulpyversus.asyncmatches import AsyncMatch
 
 class AsyncUsernameSearchResult():
     """Represent a response to a search by username.
@@ -65,7 +65,7 @@ class AsyncUsernameSearchResult():
             await user.init()
             return user
         else:
-            user = AsyncUser(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"])
+            user = AsyncUser(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"], self.mlpyvrs)
             await user.init()
             return user
         
@@ -83,7 +83,7 @@ class AsyncUsernameSearchResult():
         """IS ASYNC : Returns a list of users (Object) in the current page"""
         users = []
         for user in self.rawData["results"]:
-            newUser = AsyncUser(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"])
+            newUser = AsyncUser(self.rawData["results"][self.get_amount_of_user_in_current_page()-1]["result"]["account_id"], self.mlpyvrs)
             await newUser.init()
             users.append(newUser)
         return users
@@ -138,7 +138,7 @@ class AsyncMulpyVersus:
         """DON'T USE - Used by other classes"""
         req = await self.session.get(self.url + rqst, headers=self.header)
         req = await req.json()
-        if "code" in req and req["code"] == 401 and "msg" in req and req["msg"] == "User session kicked":
+        if "msg" in req and "User session" in req["msg"]:
             await self.refresh_token()
             req = await self.session.get(self.url + rqst, headers=self.header)
         return req

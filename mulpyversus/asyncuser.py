@@ -90,7 +90,7 @@ class PerkPage:
         Exemple: somePerk.value[PerkValue.Level.value]
         ::
         List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice"""
-        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][0]]
+        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][0]] if self.rawData["PerkPages"][0]["PerkSlugs"][0] != "" else None
 
     def get_first_perk(self) -> Perks:
         """Represent the first "small" for this page
@@ -100,7 +100,7 @@ class PerkPage:
         Exemple: somePerk.value[PerkValue.Level.value]
         ::
         List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice"""
-        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][1]]
+        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][1]] if self.rawData["PerkPages"][0]["PerkSlugs"][1] != "" else None
 
     def get_second_perk(self) -> Perks:
         """Represent the second "small" for this page
@@ -110,7 +110,7 @@ class PerkPage:
         Exemple: somePerk.value[PerkValue.Level.value]
         ::
         List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice"""
-        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][2]]
+        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][2]] if self.rawData["PerkPages"][0]["PerkSlugs"][2] != "" else None
 
     def get_third_perk(self) -> Perks:
         """Represent the third "small" for this page
@@ -120,7 +120,7 @@ class PerkPage:
         Exemple: somePerk.value[PerkValue.Level.value]
         ::
         List of values: Slug, HydraName, DisplayName, Description, AssociatedCharacterName, Category, Rarity, GoldPrice, GoldSalePrice"""
-        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][3]]
+        return Perks[self.rawData["PerkPages"][0]["PerkSlugs"][3]] if self.rawData["PerkPages"][0]["PerkSlugs"][3] != "" else None
 
     def get_related_account_id(self) -> string:
         """Represent the account_id of the user related to this page"""
@@ -191,7 +191,7 @@ class AsyncUser:
         Returns False if Character not found in PerkPreferences
         ::
         Usage Example:
-            >>> .get_perk_preferences(Characters.WonderWoman).get_main_perk()
+            >>> .get_perk_preference_by_character(Characters.WonderWoman).get_main_perk()
         """
         return PerkPage(self.profileData['data']['PerkPreferences']['Characters'][character.value["slug"]], character.value["name"], self.get_account_id()) if character.value["slug"] in self.profileData['data']['PerkPreferences']['Characters'] else False
 
