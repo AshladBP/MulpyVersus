@@ -664,5 +664,5 @@ Last User in page otherwise
 
 	GlobalLeaderboard - UserLeaderboard and AsyncGlobalLeaderboard - AsyncUserLeaderboard  are available.
 	Global leaderboard represent the worldwide leaderboard.
-	User leaderboard is the leaderboard for a specific user (to get his rank in a specific gamemode).
+	User leaderboard is the leaderboard for a specific user (to get his rank in a specific gamemode for exemple).
 	Getting a UserLeaderboard also lets you get some information about his total wins, loss and linked networks for better performance. But you can also get a User object from it.
