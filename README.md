@@ -21,7 +21,7 @@ Initializing the MulpyVersus class is the first step. With this object, you will
 
 Now also support Async. Make sure to call init on the AsyncMulpyVersus object after creating it. 
 
-    from mulpyversus.async.mulpyversus import AsyncMulpyVersus
+    from mulpyversus.asyncmulpyversus import AsyncMulpyVersus
     mlp = AsyncMulpyVersus("youSteamEcryptedAppTicket")
     await mlp.init()
     
