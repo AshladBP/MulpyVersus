@@ -1,4 +1,4 @@
-[![version 0.2,0](https://img.shields.io/badge/version-0.2.0-brightgreen.svg?style=flat)](https://pypi.org/project/mulpyversus)
+[![version 0.2.2](https://img.shields.io/badge/version-0.2.2-brightgreen.svg?style=flat)](https://pypi.org/project/mulpyversus)
 # MulpyVersus - Python Wrapper for MultiVersus API 
 
 	This library will help you to use the MultiVersus API with Python easily.
