@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
  
-VERSION = '0.1.8'
+VERSION = '0.2.2'
 DESCRIPTION = 'A Python wrapper for Multiversus API'
 
 classifiers = [
@@ -13,7 +13,7 @@ classifiers = [
  
 setup(
   name='mulpyversus',
-  version='0.1.8',
+  version='0.2.2',
   description='A Python wrapper for Multiversus API',
   long_description=open('README.md').read(),
   long_description_content_type='text/markdown',
