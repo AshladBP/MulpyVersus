@@ -113,6 +113,9 @@ class Match:
     def get_updated_at(self) -> string:
         return self.rawData['updated_at']
     
+    def get_state(self) -> string:
+        return self.rawData['state']
+    
     def get_completion_time(self) -> string:
         return self.rawData['completion_time']
 

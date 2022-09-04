@@ -1,4 +1,3 @@
-    
 import json
 import string
 from mulpyversus.mulpyversus import *

@@ -4,6 +4,7 @@ import requests
 import json
 from mulpyversus.matches import Match
 from mulpyversus.user import User
+from mulpyversus.user_matches_history import UserMatchHistory
 from mulpyversus.leaderboards import *
 from mulpyversus.utils import *
 
@@ -25,7 +26,6 @@ class UsernameSearchResult():
         obj.username = username
         obj.limit = limit
         return obj
-        
 
     def __repr__(self):
         return str(self.rawData)
@@ -151,6 +151,13 @@ class MulpyVersus:
         Usefull if you are confident what the username is
         """
         return UsernameSearchResult(self, username, limit, canReturnNone).get_user_by_number_in_page(1)
+    
+    def get_user_match_history(self, user : User) -> UserMatchHistory:
+        """Returns a UserMatchHistory object for that user
+        ::
+        Usefull if you want all the match history for that user
+        """
+        return UserMatchHistory(user, self)
 
     def refresh_user(self, user:User):
         """Used to refresh a User object (all its data)
