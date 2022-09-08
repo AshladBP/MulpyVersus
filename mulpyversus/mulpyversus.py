@@ -177,8 +177,8 @@ class MulpyVersus:
         """
         return GlobalLeaderboard(self, gamemode, countLimit)
 
-    def get_user_leaderboard_in_gamemode(self, gamemode : GamemodeRank, id):
+    def get_user_leaderboard_in_gamemode(self, id):
         """Returns a UserLeaderboard object
         ::
         """
-        return UserLeaderboard(self, gamemode, id)
+        return UserLeaderboard(self, id)
