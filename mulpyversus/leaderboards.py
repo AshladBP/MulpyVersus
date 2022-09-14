@@ -12,9 +12,9 @@ class UserLeaderboard:
             a
     Attributes:
     """
-    def __init__(self,mlpyvrs, id : string ):
-        self.oneData = json.loads(mlpyvrs.request_data("/leaderboards/1v1/score-and-rank/" + str(id)).content)  
-        self.twoData = json.loads(mlpyvrs.request_data("/leaderboards/2v2/score-and-rank/" + str(id)).content)
+    def __init__(self, mlpyvrs, id : string ):
+        self.oneData = json.loads(mlpyvrs.request_data("leaderboards/1v1/score-and-rank/" + str(id)).content)  
+        self.twoData = json.loads(mlpyvrs.request_data("leaderboards/2v2/score-and-rank/" + str(id)).content)
 
     def refresh(self):
         """Used to UserLeaderboard a User object 
