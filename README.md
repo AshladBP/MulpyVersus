@@ -4,7 +4,7 @@
 	This library will help you to use the MultiVersus API with Python easily.
 	It is still under development. Please report any issue you encounter. Python > 3.9
 
-![mulpyversus](https://cdn.discordapp.com/attachments/361240816397582336/1006703539365617674/mulpyversus.png)
+![mulpyversus](https://github.com/AshladBP/MulpyVersus/blob/main/mulpyversus.png?raw=true)
 
 
 # Usage
