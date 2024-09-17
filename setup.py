@@ -19,7 +19,7 @@ setup(
   long_description_content_type='text/markdown',
   url='https://github.com/AshladBP/MulpyVersus',  
   author='Ashlad',
-  author_email='imadbenbp@gmail.ocm',
+  author_email='contact@ashlad.dev',
   license='MIT', 
   classifiers=classifiers,
   keywords='mulpyversus multiversus api python',
